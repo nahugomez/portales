@@ -1,0 +1,243 @@
+---
+description: How development must be in this project
+globs:
+alwaysApply: true
+---
+
+# Cursor AI Rules - Turborepo Monorepo Development
+
+## Project Overview
+You are working on a **Turborepo monorepo** containing multiple Next.js applications. Your primary responsibility is to implement maintainable, scalable, and reusable solutions.
+
+## Core Development Principles
+
+### 1. Maintainability First
+- Always prioritize long-term maintenance over quick fixes
+- Write self-documenting code with clear naming conventions
+- Consider future developers who will work on this codebase
+- Document architectural decisions and complex logic
+
+### 2. Enforce DRY (Don't Repeat Yourself)
+- **CRITICAL**: Always check existing packages before creating new solutions
+- Refactor duplicated code into shared utilities/components
+- Create reusable abstractions for common patterns
+- Centralize configurations and constants
+
+### 3. Monorepo Best Practices
+- Use `workspace:*` for internal package dependencies
+- Keep external dependencies synchronized across packages
+- Update `turbo.json` when adding new scripts or build configurations
+
+## Project Structure
+```
+├── apps/
+│   ├── web/                 # Next.js applications
+├── packages/
+│   ├── ui/                  # Shared UI components (CHECK FIRST!)
+│   ├── eslint-config/       # Shared linting rules
+│   ├── typescript-config/   # Shared TS configurations
+│   ├── utils/               # Shared utility functions
+│   ├── types/               # Shared TypeScript types
+└── turbo.json               # Turborepo configuration
+```
+
+## Pre-Implementation Checklist
+Before writing any code, ALWAYS verify:
+- [ ] Does this solution already exist in `packages/`?
+- [ ] Can I reuse/extend existing components from `packages/ui/`?
+- [ ] Should this be abstracted into a shared utility in `packages/utils/`?
+- [ ] Will other apps in the monorepo benefit from this solution?
+- [ ] Am I following the established naming conventions?
+
+## Code Implementation Rules
+
+### Component Development
+```typescript
+// ✅ PREFERRED: Generic, reusable components
+interface ButtonProps {
+  variant?: 'primary' | 'secondary' | 'danger';
+  size?: 'sm' | 'md' | 'lg';
+  loading?: boolean;
+  disabled?: boolean;
+  children: React.ReactNode;
+  onClick?: () => void;
+}
+
+// ❌ AVOID: Overly specific components
+interface LoginSubmitButtonProps {
+  userCredentials: LoginForm;
+  onSuccess: (user: User) => void;
+}
+```
+
+### Utility Functions
+```typescript
+// ✅ PREFERRED: Generic utilities in packages/utils/
+export const formatCurrency = (
+  amount: number,
+  currency: string = 'USD',
+  locale: string = 'en-US'
+) => {
+  return new Intl.NumberFormat(locale, {
+    style: 'currency',
+    currency,
+  }).format(amount);
+};
+
+// ❌ AVOID: Business-specific utilities
+export const formatUserAccountBalance = (user: User) => { ... }
+```
+
+### Type Definitions
+- Define shared types in `packages/types/`
+- Use enums for constants to avoid magic strings
+- Export types from a centralized index file
+- Use `interface` for object shapes, `type` for unions/computed types
+
+## Technology-Specific Guidelines
+
+### Next.js Applications
+- Use App Router for new applications
+- Implement shared layouts in `packages/ui/layouts/`
+- Centralize metadata configuration
+- Use `next/image` for all image optimization
+- Implement proper error boundaries
+
+### TypeScript Standards
+- Enable `strict: true` in all configurations
+- Use explicit return types for public functions
+- Prefer `unknown` over `any`
+- Implement proper error handling with Result types
+
+### Styling and UI
+- Use consistent design tokens across all packages
+- Implement theme variants through CSS custom properties
+- Create compound components for complex UI patterns
+- Ensure all components are accessible (a11y compliant)
+
+## Git Workflow Requirements
+
+### Commit Message Format
+Use **Conventional Commits** for all commits:
+```
+<type>(<scope>): <description>
+
+[optional body]
+[optional footer]
+```
+
+Common types:
+- `feat`: New features
+- `fix`: Bug fixes
+- `refactor`: Code refactoring without behavior changes
+- `docs`: Documentation updates
+- `style`: Code formatting changes
+- `test`: Test additions or modifications
+- `chore`: Build process or dependency updates
+
+Examples:
+- `feat(ui): add Loading component with spinner variants`
+- `fix(utils): handle edge case in currency formatting`
+- `refactor(auth): extract authentication logic to shared hook`
+- `docs(ui): add Storybook documentation for Button component`
+
+### Package Development Workflow
+1. Check if functionality exists in shared packages
+2. If creating new shared code, place in appropriate `packages/` directory
+3. Export from package index files
+4. Update package.json dependencies using `workspace:*`
+5. Test across multiple apps before committing
+
+## Performance and Optimization
+
+### Bundle Size Management
+- Use dynamic imports for heavy components
+- Implement proper tree shaking
+- Monitor bundle size with `@next/bundle-analyzer`
+- Lazy load non-critical functionality
+
+### Caching Strategy
+- Configure Turborepo cache for optimal CI/CD performance
+- Use React Query for server state management
+- Implement proper cache invalidation strategies
+
+## Error Handling Patterns
+
+### API Responses
+```typescript
+// Standardized API response type
+type ApiResponse<T> = {
+  success: boolean;
+  data?: T;
+  error?: {
+    code: string;
+    message: string;
+    details?: unknown;
+  };
+};
+```
+
+### Error Boundaries
+- Implement error boundaries at app and component levels
+- Use consistent error logging across applications
+- Provide meaningful fallback UI for errors
+
+## Documentation Requirements
+
+### Code Documentation
+- Use JSDoc for all exported functions and components
+- Include usage examples in complex utilities
+- Document breaking changes in CHANGELOG.md files
+
+### Package README Structure
+```markdown
+# Package Name
+
+Brief description of the package purpose.
+
+## Installation
+## Usage Examples  
+## API Reference
+## Contributing Guidelines
+```
+
+## Turborepo Commands Reference
+
+```bash
+# Development
+turbo run dev                          # Run dev in all apps
+turbo run dev --filter=./apps/*        # Run dev only in apps
+turbo run build --filter=@workspace/ui  # Build specific package
+
+# Dependencies
+pnpm add <package> --filter=@workspace/ui  # Add to specific workspace
+pnpm add <package> -w                      # Add to workspace root
+
+# Testing and Linting
+turbo run test                         # Run tests across all packages
+turbo run lint --filter=./apps/web     # Lint specific app
+```
+
+## Quality Assurance Checklist
+
+Before submitting any code:
+- [ ] Code passes TypeScript checks without warnings
+- [ ] All tests are passing
+- [ ] ESLint shows no errors or warnings
+- [ ] Components are documented with proper JSDoc
+- [ ] Shared utilities are placed in appropriate packages
+- [ ] No duplicate code exists across the monorepo
+- [ ] Commit follows conventional commit format
+
+## AI Assistant Instructions
+
+When I ask you to implement features:
+
+1. **Always check existing packages first** - Ask me about existing implementations before creating new ones
+2. **Prioritize reusability** - Design solutions that can be used across multiple apps
+3. **Follow established patterns** - Use the same patterns already present in the codebase
+4. **Ask clarifying questions** - If requirements could lead to either specific or generic solutions, ask which approach I prefer
+5. **Suggest improvements** - If you notice opportunities to refactor existing code for better reusability, mention them
+6. **Consider performance** - Always think about bundle size and runtime performance implications
+
+Remember: **Long-term maintainability is more important than implementation speed.**
