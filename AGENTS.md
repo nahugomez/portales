@@ -7,18 +7,21 @@ You are working on a **monorepo managed with Turborepo** that contains multiple 
 ## Fundamental Principles
 
 ### 1. Maintainability and Scalability
+
 - **Top priority**: All solutions must facilitate future maintenance
 - Write code that is easy to understand, modify, and extend
 - Document important architectural decisions
 - Consider the long-term impact of each implementation
 
 ### 2. Reusability
+
 - **Avoid code duplication** at all costs
 - Create reusable components, hooks, utilities, and functions
 - Abstract common logic into shared packages
 - Design consistent and flexible internal APIs
 
 ### 3. Don't Repeat Yourself (DRY)
+
 - Before writing new code, check if a similar solution already exists
 - If you find duplicated code, refactor it into a shared solution
 - Centralize configurations, constants, and common types
@@ -40,23 +43,27 @@ You are working on a **monorepo managed with Turborepo** that contains multiple 
 ## Implementation Guidelines
 
 ### Components and UI
+
 - **Always** check the `packages/ui/` package first before creating new components
 - Create generic and configurable components through props
 - Use design tokens and consistent design systems
 - Implement variants using patterns like Compound Components or similar
 
 ### Business Logic
+
 - Abstract complex logic into custom hooks or utilities
 - Place reusable functions in `packages/utils/`
 - Maintain clear separation of responsibilities
 - Implement patterns like Repository, Service, or similar for data logic
 
 ### Configuration and Types
+
 - Define shared TypeScript types in `packages/types/`
 - Use enums and constants for repeated values to avoid magic strings
 - Maintain consistent environment configurations across apps
 
 ### APIs and Data
+
 - Standardize API response structure
 - Create reusable wrappers/clients for external services
 - Implement data validation using shared schemas (Zod)
@@ -75,6 +82,7 @@ Before implementing any solution, verify:
 ## Recommended Patterns
 
 ### For Components
+
 ```typescript
 // ✅ Good: Generic and reusable component
 interface ButtonProps {
@@ -91,10 +99,11 @@ interface LoginButtonProps {
 ```
 
 ### For Utilities
+
 ```typescript
 // ✅ Good: Generic utility
 export const formatCurrency = (
-  amount: number, 
+  amount: number,
   currency: string = 'USD'
 ) => { ... }
 
@@ -105,16 +114,19 @@ export const formatUserBalance = (user: User) => { ... }
 ## Turborepo - Specific Considerations
 
 ### Dependencies
+
 - Use `workspace:*` for internal dependencies
 - Keep external dependencies synchronized between packages
 - Update `turbo.json` when adding new scripts or dependencies
 
 ### Build and Deploy
+
 - Properly configure `inputs` and `outputs` in turbo.json
 - Ensure that changes in shared packages trigger rebuilds
 - Optimize Turborepo cache for CI/CD
 
 ### Shared Scripts
+
 - Centralize common scripts (lint, test, build) in the root
 - Use `turbo run` to execute commands in parallel
 - Maintain consistency in script names between packages
@@ -122,16 +134,19 @@ export const formatUserBalance = (user: User) => { ... }
 ## Next.js - Best Practices
 
 ### Routing and Pages
+
 - Use App Router when possible
 - Implement shared layouts for similar pages
 - Centralize metadata and SEO configuration
 
 ### Performance
+
 - Implement lazy loading for heavy components
 - Use Next.js Image optimization
 - Configure bundle analyzer to monitor size
 
 ### State and Data
+
 - Consider using React Query for data fetching
 - Implement shared states using Context or libraries like Zustand
 - Keep state as close as possible to where it's used
@@ -139,11 +154,13 @@ export const formatUserBalance = (user: User) => { ... }
 ## Code Standards
 
 ### TypeScript
+
 - Use `strict: true` in all configurations
 - Define explicit types for important APIs and props
 - Avoid `any`, use `unknown` when necessary
 
 ### Git and Version Control
+
 - **Use Conventional Commits** for all commit messages
 - Follow the format: `type(scope): description`
 - Common types: `feat`, `fix`, `docs`, `style`, `refactor`, `test`, `chore`
@@ -154,6 +171,7 @@ export const formatUserBalance = (user: User) => { ... }
   - `refactor(auth): extract login logic to shared hook`
 
 ### Documentation
+
 - Document main components with JSDoc
 - Keep README updated in each package
 - Document breaking changes in CHANGELOG
