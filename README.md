@@ -105,4 +105,15 @@ Al solicitar asistencia de IA para desarrollo, asegurate de:
 2. Proporcionar contexto específico del componente o aplicación objetivo
 3. Validar que la solución propuesta cumple con los estándares establecidos
 
+**🎯 Integración con Cursor IDE**
+
+Para desarrolladores que utilizan Cursor como editor de código, el proyecto incluye un archivo `.cursorrules` que traduce y optimiza todas las directrices establecidas en `AGENTS.md` específicamente para este entorno de desarrollo:
+
+- **Configuración automática**: Las reglas se aplican automáticamente al abrir el proyecto
+- **Contexto optimizado**: Formato específicamente diseñado para la IA integrada de Cursor
+- **Coherencia**: Fomenta que las sugerencias de código mantengan los estándares del proyecto
+- **Flujo mejorado**: Reduce la necesidad de referencias manuales durante el desarrollo
+
+Esto proporciona una experiencia de desarrollo más fluida mientras mantiene la adherencia a los principios arquitectónicos establecidos.
+
 Esta metodología asegura que todas las contribuciones generadas por IA mantengan la integridad arquitectónica y cumplan con los requisitos específicos del ecosistema gubernamental.
