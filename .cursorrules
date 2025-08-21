@@ -1,0 +1,240 @@
+# AI Development Rules for Turborepo Project
+
+You are an AI assistant working on a **monorepo managed with Turborepo** that contains multiple Next.js applications. Your primary goal is to implement solutions that prioritize long-term maintenance and scalability.
+
+## Core Principles (CRITICAL - Follow Always)
+
+### 1. Maintainability and Scalability First
+- **TOP PRIORITY**: All solutions must facilitate future maintenance
+- Write code that is easy to understand, modify, and extend
+- Document important architectural decisions
+- Consider the long-term impact of each implementation
+- Quality over speed - take time to create robust solutions
+
+### 2. Eliminate Code Duplication (DRY Principle)
+- **MANDATORY**: Check for existing solutions before writing new code
+- Create reusable components, hooks, utilities, and functions
+- Abstract common logic into shared packages
+- If you find duplicated code, refactor it into a shared solution
+- Design consistent and flexible internal APIs
+
+### 3. Reusability by Design
+- Build generic and configurable solutions through props/parameters
+- Centralize configurations, constants, and common types
+- Create flexible APIs that can adapt to future needs
+
+## Monorepo Structure
+
+```
+├── apps/
+│   ├── web/                 # Next.js applications
+├── packages/
+│   ├── ui/                  # Shared UI components
+│   ├── eslint-config/       # Shared ESLint configurations
+│   ├── typescript-config/   # Shared TypeScript configurations
+│   ├── utils/               # Shared utilities
+│   ├── types/               # Shared types
+└── turbo.json
+```
+
+## Implementation Rules
+
+### Pre-Implementation Checklist (MANDATORY)
+Before implementing ANY solution, you MUST verify:
+- [ ] Does a similar solution already exist in the monorepo?
+- [ ] Can I reuse existing components/utilities?
+- [ ] Will this solution be useful in other parts of the project?
+- [ ] Am I following the project's naming conventions?
+- [ ] Is the solution generic enough but not over-engineered?
+
+### Component Development Rules
+- **ALWAYS** check `packages/ui/` first before creating new components
+- Create generic components with prop-based configuration
+- Use design tokens and consistent design systems
+- Implement variants using Compound Components or similar patterns
+
+Example Pattern:
+```typescript
+// ✅ PREFERRED: Generic and reusable
+interface ButtonProps {
+  variant?: 'primary' | 'secondary' | 'danger';
+  size?: 'sm' | 'md' | 'lg';
+  loading?: boolean;
+  children: React.ReactNode;
+}
+
+// ❌ AVOID: Overly specific
+interface LoginButtonProps {
+  onLoginSuccess: () => void;
+}
+```
+
+### Business Logic Rules
+- Abstract complex logic into custom hooks or utilities
+- Place reusable functions in `packages/utils/`
+- Maintain clear separation of responsibilities
+- Implement Repository/Service patterns for data logic
+
+Example Pattern:
+```typescript
+// ✅ PREFERRED: Generic utility
+export const formatCurrency = (
+  amount: number, 
+  currency: string = 'USD'
+) => { ... }
+
+// ❌ AVOID: Overly specific
+export const formatUserBalance = (user: User) => { ... }
+```
+
+### Configuration and Types Rules
+- Define shared TypeScript types in `packages/types/`
+- Use enums and constants instead of magic strings
+- Maintain consistent environment configurations across apps
+- Centralize API response interfaces and validation schemas
+
+### API and Data Rules
+- Standardize API response structure across the project
+- Create reusable wrappers/clients for external services
+- Implement data validation using shared schemas (prefer Zod)
+- Centralize fetching and caching logic
+
+## Turborepo Specific Rules
+
+### Dependencies Management
+- **ALWAYS** use `workspace:*` for internal dependencies
+- Keep external dependencies synchronized between packages
+- Update `turbo.json` when adding new scripts or dependencies
+
+### Build Configuration
+- Properly configure `inputs` and `outputs` in turbo.json
+- Ensure changes in shared packages trigger appropriate rebuilds
+- Optimize Turborepo cache configuration
+
+### Scripts Consistency
+- Centralize common scripts (lint, test, build) in root
+- Use `turbo run` for parallel execution
+- Maintain consistent script names across packages
+
+## Next.js Best Practices
+
+### Routing and Structure
+- Prefer App Router over Pages Router for new implementations
+- Implement shared layouts for similar page types
+- Centralize metadata and SEO configuration
+
+### Performance Requirements
+- Implement lazy loading for heavy components
+- **ALWAYS** use Next.js Image component for images
+- Monitor bundle size and optimize when necessary
+
+### State Management
+- Use React Query/TanStack Query for server state
+- Implement client state with Context API or Zustand
+- Keep state as close as possible to where it's consumed
+
+## Code Standards (MANDATORY)
+
+### TypeScript Rules
+- **STRICT MODE**: Use `strict: true` in all configurations
+- Define explicit types for all important APIs and props
+- **NEVER** use `any` - use `unknown` when type is uncertain
+- Implement proper error handling with typed errors
+
+### Git Commit Rules (REQUIRED)
+- **MUST** use Conventional Commits for ALL commit messages
+- Format: `type(scope): description`
+- Required types: `feat`, `fix`, `docs`, `style`, `refactor`, `test`, `chore`
+- Examples:
+  - `feat(ui): add Button component with loading state`
+  - `fix(utils): resolve currency formatting for negative numbers`
+  - `docs(readme): update installation instructions`
+  - `refactor(auth): extract login logic to shared hook`
+
+### Documentation Requirements
+- Document all public components with JSDoc
+- Maintain README files in each package
+- Document breaking changes in CHANGELOG
+- Include usage examples for complex utilities
+
+## Error Handling Rules
+
+### Component Error Boundaries
+- Implement error boundaries for critical UI sections
+- Provide fallback UIs for failed components
+- Log errors appropriately for debugging
+
+### API Error Handling
+- Standardize error response handling across the app
+- Implement retry logic for transient failures
+- Provide meaningful error messages to users
+
+## Testing Requirements
+
+### Component Testing
+- Write tests for all shared components in `packages/ui/`
+- Test different prop combinations and edge cases
+- Use React Testing Library patterns
+
+### Utility Testing
+- **REQUIRED**: Test all functions in `packages/utils/`
+- Include edge cases and error scenarios
+- Maintain high test coverage for shared code
+
+## Performance Rules
+
+### Bundle Optimization
+- Analyze and optimize bundle sizes regularly
+- Implement code splitting for large features
+- Use dynamic imports for optional functionality
+
+### Runtime Performance
+- Avoid unnecessary re-renders with proper memoization
+- Optimize expensive computations with useMemo/useCallback
+- Profile performance regularly in development
+
+## Security Considerations
+
+### Data Validation
+- **ALWAYS** validate data at boundaries (API responses, user input)
+- Use schema validation libraries (Zod) consistently
+- Sanitize user inputs appropriately
+
+### Environment Variables
+- Never commit sensitive data to version control
+- Use appropriate environment variable patterns
+- Validate required environment variables at startup
+
+## Useful Commands
+
+```bash
+# Development
+turbo run dev --filter=./apps/*
+turbo run build --filter=@workspace/ui
+
+# Dependencies
+pnpm add <package> --filter=@workspace/ui
+pnpm add -w <package>  # Add to workspace root
+
+# Testing
+turbo run test --filter=@workspace/ui
+turbo run lint --filter=./packages/*
+```
+
+## When to Break Rules
+
+Rules can be broken ONLY when:
+1. There's a critical business requirement that cannot be met otherwise
+2. The technical debt is documented and scheduled for refactoring
+3. The deviation is discussed and approved by the team
+4. Alternative approaches have been thoroughly evaluated
+
+## Resources
+
+- [Turborepo Documentation](https://turbo.build/repo/docs)
+- [Next.js Documentation](https://nextjs.org/docs)
+- [Monorepo Best Practices](https://monorepo.tools)
+
+---
+
+**CRITICAL REMINDER**: Long-term maintainability is MORE IMPORTANT than implementation speed. Always prioritize code quality, reusability, and documentation over quick fixes.
