@@ -5,7 +5,7 @@ import '@workspace/ui/globals.css';
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://sj.sanjuan.gob.ar'),
-  title: 'Gobierno de San Juan | Oficial',
+  title: 'Inicio | Gobierno de San Juan',
   description:
     'Portal oficial del Gobierno de la Provincia de San Juan. Accedé a servicios, trámites, noticias y información institucional de la administración provincial.',
   keywords: [
