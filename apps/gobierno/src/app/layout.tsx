@@ -1,5 +1,9 @@
 import { Ubuntu, Ubuntu_Mono } from 'next/font/google';
 import { Providers } from '@/components/providers';
+import Image from 'next/image';
+import Navbar from '@workspace/ui/components/navbar';
+import cidiLogo from '@/assets/logos/cidi-logotipo.svg';
+import haciendaLogo from '@/assets/logos/hacienda-logotipo.svg';
 import type { Metadata, Viewport } from 'next';
 import '@workspace/ui/globals.css';
 
@@ -90,6 +94,24 @@ export default function RootLayout({
       <body
         className={`${fontSans.variable} ${fontMono.variable} font-sans antialiased `}
       >
+        <Navbar
+          leftLogo={
+            <Image
+              src={haciendaLogo}
+              alt="Ministerio de Economía, Finanzas y Hacienda"
+              className="h-6 w-auto md:h-10"
+              priority
+            />
+          }
+          rightLogo={
+            <Image
+              src={cidiLogo}
+              alt="Ciudadano Digital"
+              className="h-6 w-auto md:h-10"
+              priority
+            />
+          }
+        />
         <Providers>{children}</Providers>
       </body>
     </html>
