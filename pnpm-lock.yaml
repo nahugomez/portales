@@ -131,20 +131,11 @@ importers:
 
   packages/searcher:
     dependencies:
-      '@workspace/ui':
-        specifier: workspace:*
-        version: link:../ui
-      axios:
-        specifier: ^1.6.0
-        version: 1.11.0
-      lucide-react:
-        specifier: ^0.424.0
-        version: 0.424.0(react@19.1.1)
       react:
-        specifier: '>=18'
+        specifier: ^18 || ^19
         version: 19.1.1
       react-dom:
-        specifier: '>=18'
+        specifier: ^18 || ^19
         version: 19.1.1(react@19.1.1)
     devDependencies:
       '@types/node':
@@ -156,9 +147,24 @@ importers:
       '@types/react-dom':
         specifier: ^19.1.7
         version: 19.1.7(@types/react@19.1.9)
+      '@workspace/eslint-config':
+        specifier: workspace:*
+        version: link:../eslint-config
       '@workspace/typescript-config':
         specifier: workspace:*
         version: link:../typescript-config
+      '@workspace/ui':
+        specifier: workspace:*
+        version: link:../ui
+      axios:
+        specifier: ^1.6.0
+        version: 1.11.0
+      eslint:
+        specifier: ^9.32.0
+        version: 9.32.0(jiti@2.5.1)
+      lucide-react:
+        specifier: ^0.424.0
+        version: 0.424.0(react@19.1.1)
       typescript:
         specifier: ^5.9.2
         version: 5.9.2

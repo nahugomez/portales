@@ -2,6 +2,7 @@
   "name": "@workspace/searcher",
   "version": "1.0.0",
   "description": "Buscador compartido para portales",
+  "private": true,
   "type": "module",
   "sideEffects": false,
   "exports": {
@@ -10,18 +11,27 @@
   "files": [
     "src"
   ],
+  "scripts": {
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
+  },
   "peerDependencies": {
-    "axios": "^1.6.0",
-    "react": ">=18",
-    "react-dom": ">=18",
     "@workspace/ui": "workspace:*",
-    "lucide-react": "^0.424.0"
+    "axios": "^1.6.0",
+    "lucide-react": "^0.424.0",
+    "react": "^18 || ^19",
+    "react-dom": "^18 || ^19"
   },
   "devDependencies": {
+    "@workspace/eslint-config": "workspace:*",
     "@workspace/typescript-config": "workspace:*",
+    "@workspace/ui": "workspace:*",
     "@types/node": "^20.19.9",
     "@types/react": "^19.1.9",
     "@types/react-dom": "^19.1.7",
+    "axios": "^1.6.0",
+    "eslint": "^9.32.0",
+    "lucide-react": "^0.424.0",
     "typescript": "^5.9.2"
   },
   "engines": {
