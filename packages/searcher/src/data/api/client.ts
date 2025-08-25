@@ -1,23 +1,22 @@
 import axios from 'axios';
-import { TramiteAPI } from '../types/api';
-import { SearchResult } from '../types';
-import { API_CONFIG } from '../config/api';
-import { transformTramiteToSearchResult } from '../transformers/tramiteTransformer';
+import { API_CONFIG } from './config';
+import { transformTramiteToSearchResult } from '../mappers/mapper';
+import { RawTramite, SearchResult } from '../types/api';
 
 /**
  * Cliente para la API de trámites
  */
-export class TramitesApiClient {
+export class Client {
   /**
    * Realiza la petición HTTP a la API de trámites
    */
   private static async fetchTramites(
     searchTerm: string
-  ): Promise<TramiteAPI[]> {
+  ): Promise<RawTramite[]> {
     const url = `${API_CONFIG.BASE_URL}${API_CONFIG.ENDPOINT}/${encodeURIComponent(searchTerm.trim())}`;
 
     try {
-      const response = await axios.get<TramiteAPI[]>(url, {
+      const response = await axios.get<RawTramite[]>(url, {
         timeout: API_CONFIG.TIMEOUT,
       });
       return response.data;

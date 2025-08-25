@@ -1,15 +1,15 @@
 import { SearchServiceParams, SearchResult } from '../types';
-import { TramitesApiClient } from '../clients/tramitesApiClient';
+import { Client } from '../api/client';
 
 /**
  * Servicio principal de búsqueda de trámites
  */
-export const searchResultsService = async ({
+export const Service = async ({
   input,
   tramitesResults = 30,
 }: SearchServiceParams): Promise<SearchResult[]> => {
   try {
-    return await TramitesApiClient.searchTramites(input);
+    return await Client.searchTramites(input);
   } catch (err) {
     console.error('Error in searchResultsService:', err);
     return [];

@@ -1,9 +1,13 @@
 'use client';
 
+// React
 import * as React from 'react';
-import { Search as SearchIcon } from 'lucide-react';
 
+// Utilities
 import { cn } from '@workspace/ui/lib/utils';
+
+// UI
+import { Search as SearchIcon } from 'lucide-react';
 import { Input } from '@workspace/ui/components/input';
 import { Button } from '@workspace/ui/components/button';
 import {
@@ -19,27 +23,11 @@ import {
   CommandGroup,
 } from '@workspace/ui/components/command';
 
+// Hooks
 import { useSearch } from '../hooks/useSearch';
 
-export type SearchItem = {
-  id: string;
-  title: string;
-  description?: string;
-  url?: string;
-};
-
-export type SearchBoxProps = {
-  placeholder?: string;
-  autoFocus?: boolean;
-  minChars?: number;
-  debounceMs?: number;
-  defaultQuery?: string;
-  onSubmit?: (q: string) => void | Promise<void>;
-  onSelectResult?: (item: SearchItem) => void | Promise<void>;
-  navigateTo?: (item: SearchItem) => void;
-  className?: string;
-  renderItem?: (item: SearchItem) => React.ReactNode;
-};
+// Types
+import { SearchBoxProps, SearchItem } from '../public/types';
 
 export const SearchBox: React.FC<SearchBoxProps> = ({
   placeholder = '¿Qué trámite o servicio estás buscando?',

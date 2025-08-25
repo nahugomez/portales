@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useDebouncedValue } from './useDebouncedValue';
-import { searchResultsService } from '../services/searchService';
-import type { TramiteAPI } from '../types/api';
+import { Service } from '../data/services/service';
+import type { RawTramite } from '../data/types/api';
 
 type SearchItem = {
   id: string;
@@ -10,7 +10,7 @@ type SearchItem = {
   url?: string;
 };
 
-function mapTramiteToItem(t: TramiteAPI): SearchItem {
+function mapTramiteToItem(t: RawTramite): SearchItem {
   return {
     id: t.id,
     title: t.titulo,
@@ -39,8 +39,8 @@ export function useSearch(opts?: { minChars?: number; debounceMs?: number }) {
       }
       setLoading(true);
       try {
-        const res = await searchResultsService({ input: debounced.trim() });
-        const list = (res as unknown as TramiteAPI[]).map(mapTramiteToItem);
+        const res = await Service({ input: debounced.trim() });
+        const list = (res as unknown as RawTramite[]).map(mapTramiteToItem);
         if (!cancelled) setItems(list);
       } finally {
         if (!cancelled) setLoading(false);

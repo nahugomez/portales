@@ -5,14 +5,11 @@
   "type": "module",
   "sideEffects": false,
   "exports": {
-    ".": "./src/components/index.ts"
+    ".": "./src/public/index.ts"
   },
   "files": [
     "src"
   ],
-  "scripts": {
-    "type-check": "tsc --noEmit"
-  },
   "peerDependencies": {
     "axios": "^1.6.0",
     "react": ">=18",

@@ -1,12 +1,12 @@
-import { TramiteAPI } from '../types/api';
+import { RawTramite } from '../types';
 import { SearchResult } from '../types';
-import { cleanHtmlText, createTramiteSlug } from '../utils/textUtils';
+import { cleanHtmlText, createTramiteSlug } from '../../utils/text';
 
 /**
  * Transforma un trámite de la API al formato de respuesta
  */
 export const transformTramiteToSearchResult = (
-  tramite: TramiteAPI
+  tramite: RawTramite
 ): SearchResult => {
   return {
     id: tramite.id,
